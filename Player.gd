@@ -8,8 +8,4 @@ func _ready():
 
 
 func _on_timer_timeout():
-	var move = moves[next_move_index]
-	if level.can_move(grid_coords, move):
-		level.do_move(grid_coords, move)
-	next_move_index = (next_move_index + 1) % len(moves)
-
+	level.move_player(grid_coords)

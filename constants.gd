@@ -13,3 +13,11 @@ func delta(dir: Constants.DIRECTION) -> Vector2i:
 		Constants.UP: return Vector2i.UP
 		Constants.DOWN: return Vector2i.DOWN
 		_: return Vector2i.ZERO
+
+func dir_name(dir: Constants.DIRECTION):
+	match dir:
+		Constants.LEFT: return "LEFT"
+		Constants.RIGHT: return "RIGHT"
+		Constants.UP: return "UP"
+		Constants.DOWN: return "DOWN"
+		_: return ""

@@ -1,31 +1,63 @@
 extends TileMap
 
 var block_scene = preload("res://block.tscn")
+@export_global_file("*.tscn") var next_scene
 
 const WALL_TILE_COORDS = Vector2i(1, 2)
 const SENSOR_TILE_COORDS = Vector2i(2, 0)
 const ACTIVE_SENSOR_TILE_COORDS = Vector2i(0, 1)
+const FONT_SIZE_NORMAL = 24
+const FONT_SIZE_LARGE = 48
 
 var sensor_coords = []
-
+@export var player_moves: Array[Constants.DIRECTION]
+var next_move_index = 0
 
 func _ready():
+	set_move_text()
 	for coords in get_used_cells(0):
 		if get_cell_atlas_coords(0, coords) == SENSOR_TILE_COORDS:
 			sensor_coords.append(coords)
 
-
 func _process(delta):
 	update_sensors()
+	update_move_text()
+
+func set_move_text():
+	for move in player_moves:
+		var node = Label.new()
+		node.text = Constants.dir_name(move)
+		node.add_theme_color_override("font_color", Color.WHITE)
+		node.add_theme_font_size_override("font_size", FONT_SIZE_NORMAL)
+		$MoveTextContainer.add_child(node)
+
+
+func update_move_text():
+	for i in range(len($MoveTextContainer.get_children())):
+		var node = $MoveTextContainer.get_child(i)
+		if (i+1) % len(player_moves) == next_move_index:
+			node.add_theme_font_size_override("font_size", FONT_SIZE_LARGE)
+		else:
+			node.add_theme_font_size_override("font_size", FONT_SIZE_NORMAL)
+
+func move_player(grid_coords):
+	var move = player_moves[next_move_index]
+	if can_move(grid_coords, move):
+		do_move(grid_coords, move)
+	next_move_index = (next_move_index + 1) % len(player_moves)
 
 
 func update_sensors():
+	var all_done = true
 	for sensor in sensor_coords:
 		var node = get_child_at(sensor)
 		if node and node.is_in_group("blocks"):
 			set_cell(0, sensor, tile_set.get_source_id(0), ACTIVE_SENSOR_TILE_COORDS, 0)
 		else:
 			set_cell(0, sensor, tile_set.get_source_id(0), SENSOR_TILE_COORDS, 0)
+			all_done = false
+	if all_done:
+		get_tree().change_scene_to_file(next_scene)
 
 
 func is_wall(grid_coords) -> bool:
