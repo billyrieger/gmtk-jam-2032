@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://dm68sfnq7ror1"]
+[gd_scene load_steps=8 format=3 uid="uid://dm68sfnq7ror1"]
 
 [ext_resource type="Texture2D" uid="uid://cpx7r4nsw4bod" path="res://assets/rainbow_32px.png" id="1_kcqlc"]
 [ext_resource type="Script" path="res://Level.gd" id="2_6s868"]
@@ -21,6 +21,11 @@ texture_region_size = Vector2i(32, 32)
 tile_size = Vector2i(32, 32)
 sources/2 = SubResource("TileSetAtlasSource_aoacj")
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_u3abe"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kmerb"]
+bg_color = Color(0.537255, 0.611765, 0.67451, 1)
+
 [node name="Level" type="TileMap"]
 texture_filter = 1
 position = Vector2(320, 180)
@@ -41,3 +46,14 @@ offset_right = -93.0
 offset_bottom = 156.0
 alignment = 1
 vertical = true
+
+[node name="Button" type="Button" parent="."]
+offset_left = 204.0
+offset_top = -151.0
+offset_right = 298.0
+offset_bottom = -109.0
+theme_override_styles/normal = SubResource("StyleBoxFlat_u3abe")
+theme_override_styles/hover = SubResource("StyleBoxFlat_kmerb")
+text = "START"
+
+[connection signal="pressed" from="Button" to="." method="_on_start_button_pressed"]

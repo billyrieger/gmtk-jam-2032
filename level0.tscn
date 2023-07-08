@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://jm58sa11kx2x"]
+[gd_scene load_steps=8 format=3 uid="uid://jm58sa11kx2x"]
 
 [ext_resource type="Texture2D" uid="uid://cpx7r4nsw4bod" path="res://assets/rainbow_32px.png" id="1_qxf8i"]
 [ext_resource type="Script" path="res://Level.gd" id="2_cy0p5"]
@@ -21,6 +21,11 @@ texture_region_size = Vector2i(32, 32)
 tile_size = Vector2i(32, 32)
 sources/2 = SubResource("TileSetAtlasSource_aoacj")
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ht84v"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fjo6l"]
+bg_color = Color(0.537255, 0.611765, 0.67451, 1)
+
 [node name="Level" type="TileMap"]
 texture_filter = 1
 position = Vector2(320, 180)
@@ -42,3 +47,24 @@ offset_right = -93.0
 offset_bottom = 156.0
 alignment = 1
 vertical = true
+
+[node name="StartButton" type="Button" parent="."]
+offset_left = 203.0
+offset_top = -151.0
+offset_right = 298.0
+offset_bottom = -100.0
+theme_override_styles/normal = SubResource("StyleBoxFlat_ht84v")
+theme_override_styles/hover = SubResource("StyleBoxFlat_fjo6l")
+text = "START"
+
+[node name="ResetButton" type="Button" parent="."]
+offset_left = 201.0
+offset_top = -77.0
+offset_right = 296.0
+offset_bottom = -26.0
+theme_override_styles/normal = SubResource("StyleBoxFlat_ht84v")
+theme_override_styles/hover = SubResource("StyleBoxFlat_fjo6l")
+text = "RESET"
+
+[connection signal="pressed" from="StartButton" to="." method="_on_start_button_pressed"]
+[connection signal="pressed" from="ResetButton" to="." method="_on_reset_button_pressed"]

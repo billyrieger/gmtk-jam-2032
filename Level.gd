@@ -35,7 +35,8 @@ func set_move_text():
 func update_move_text():
 	for i in range(len($MoveTextContainer.get_children())):
 		var node = $MoveTextContainer.get_child(i)
-		if (i+1) % len(player_moves) == next_move_index:
+		var move = i if $Player/Timer.is_stopped() else i+1
+		if move % len(player_moves) == next_move_index:
 			node.add_theme_font_size_override("font_size", FONT_SIZE_LARGE)
 		else:
 			node.add_theme_font_size_override("font_size", FONT_SIZE_NORMAL)
@@ -105,8 +106,17 @@ func _unhandled_input(event):
 			# don't spawn a block if something is already there
 			if get_child_at(map_coords):
 				return
-			# don't spawn a block directly on a sensor
-			if get_cell_atlas_coords(0, map_coords) in [SENSOR_TILE_COORDS, ACTIVE_SENSOR_TILE_COORDS]:
+			# don't spawn a block directly on something else
+			if get_cell_atlas_coords(0, map_coords) in [WALL_TILE_COORDS, SENSOR_TILE_COORDS, ACTIVE_SENSOR_TILE_COORDS]:
 				return 
 			print("spawning block at ", map_coords)
 			spawn_block(map_coords)
+
+
+func _on_start_button_pressed():
+	$Player/Timer.start()
+	$Player._on_timer_timeout()
+
+
+func _on_reset_button_pressed():
+	get_tree().reload_current_scene()
