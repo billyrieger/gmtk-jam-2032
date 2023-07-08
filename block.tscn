@@ -1,0 +1,15 @@
+[gd_scene load_steps=4 format=3 uid="uid://c2f6jkx5fv07y"]
+
+[ext_resource type="Texture2D" uid="uid://cpx7r4nsw4bod" path="res://assets/rainbow_32px.png" id="1_t8qxl"]
+[ext_resource type="Script" path="res://Block.gd" id="2_s7amt"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_x2da7"]
+atlas = ExtResource("1_t8qxl")
+region = Rect2(32, 32, 32, 32)
+
+[node name="Block" type="Sprite2D" groups=["blocks"]]
+scale = Vector2(0.75, 0.75)
+texture = SubResource("AtlasTexture_x2da7")
+centered = false
+offset = Vector2(6, 6)
+script = ExtResource("2_s7amt")
