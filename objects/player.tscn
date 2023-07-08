@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://bcyaynqdbnue"]
 
 [ext_resource type="Texture2D" uid="uid://g2bhvf233him" path="res://icon.svg" id="1_de5yd"]
-[ext_resource type="Script" path="res://Player.gd" id="2_77xe7"]
+[ext_resource type="Script" path="res://objects/Player.gd" id="2_77xe7"]
 
 [node name="Player" type="Sprite2D" groups=["players"]]
 scale = Vector2(0.25, 0.25)

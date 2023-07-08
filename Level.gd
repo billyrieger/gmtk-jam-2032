@@ -1,6 +1,6 @@
 extends TileMap
 
-var block_scene = preload("res://block.tscn")
+var block_scene = preload("res://objects/block.tscn")
 @export_global_file("*.tscn") var next_scene
 
 const WALL_TILE_COORDS = Vector2i(1, 2)
