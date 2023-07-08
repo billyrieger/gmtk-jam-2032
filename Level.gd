@@ -4,12 +4,14 @@ var block_scene = preload("res://block.tscn")
 @export_global_file("*.tscn") var next_scene
 
 const WALL_TILE_COORDS = Vector2i(1, 2)
+const FINISH_TILE_COORDS = Vector2i(0, 1)
 const SENSOR_TILE_COORDS = Vector2i(2, 0)
-const ACTIVE_SENSOR_TILE_COORDS = Vector2i(0, 1)
+const ACTIVE_SENSOR_TILE_COORDS = Vector2i(1, 0)
 const FONT_SIZE_NORMAL = 24
 const FONT_SIZE_LARGE = 48
 
 var sensor_coords = []
+var finish_coords = []
 @export var player_moves: Array[Constants.DIRECTION]
 var next_move_index = 0
 
@@ -18,10 +20,13 @@ func _ready():
 	for coords in get_used_cells(0):
 		if get_cell_atlas_coords(0, coords) == SENSOR_TILE_COORDS:
 			sensor_coords.append(coords)
+		elif get_cell_atlas_coords(0, coords) == FINISH_TILE_COORDS:
+			finish_coords.append(coords)
 
 func _process(delta):
-	update_sensors()
 	update_move_text()
+	if update_sensors() and update_finish():
+		get_tree().change_scene_to_file(next_scene)
 
 func set_move_text():
 	for move in player_moves:
@@ -47,8 +52,17 @@ func move_player(grid_coords):
 		do_move(grid_coords, move)
 	next_move_index = (next_move_index + 1) % len(player_moves)
 
+func update_finish() -> bool:
+	for finish in finish_coords:
+		var node = get_child_at(finish)
+		if node and node.is_in_group("players"):
+			continue
+		else:
+			return false
+	return true
 
-func update_sensors():
+
+func update_sensors() -> bool:
 	var all_done = true
 	for sensor in sensor_coords:
 		var node = get_child_at(sensor)
@@ -57,8 +71,7 @@ func update_sensors():
 		else:
 			set_cell(0, sensor, tile_set.get_source_id(0), SENSOR_TILE_COORDS, 0)
 			all_done = false
-	if all_done:
-		get_tree().change_scene_to_file(next_scene)
+	return all_done
 
 
 func is_wall(grid_coords) -> bool:
